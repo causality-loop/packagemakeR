@@ -22,7 +22,7 @@ if (getRversion() >= '2.15.1')
 #' if(interactive()){
 #'  packagemakeR::make_package(
 #'    source_directory = '~/source-dir/R', 
-#'    target_directory = '~/target-dir',
+#'    package_directory = '~/package-dir',
 #'    first_and_last_names = 'John Doe',
 #'    github_username = 'john-doe',
 #'    email = johndoe@email.com,

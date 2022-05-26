@@ -49,7 +49,7 @@ Adding entries into the custom dictionary file (specified with the \code{diction
 if(interactive()){
  packagemakeR::make_package(
    source_directory = '~/source-dir/R', 
-   target_directory = '~/target-dir',
+   package_directory = '~/package-dir',
    first_and_last_names = 'John Doe',
    github_username = 'john-doe',
    email = johndoe@email.com,
