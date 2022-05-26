@@ -43,9 +43,13 @@ packagemakeR::make_package(
 ```
 
 ### Editing
-- Edit the *roxygen2* headers for each file in the `R` directory
-- Check `DESCRIPTION`
-- Verify that other documentation is correct
+
+#### For each function in the `R` directory
+- Edit the *roxygen2* headers
+- Check `globalVariables` for correctness
+
+#### Documentation
+- Check `DESCRIPTION` and other documentation for correctness
 - Complete `README.md`
 
 ### Push to GitHub
