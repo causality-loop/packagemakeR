@@ -11,7 +11,6 @@ if (getRversion() >= '2.15.1')
 #' @param package_description character, description of the package which will be written in `DESCRIPTION`
 #' @param dictionary_file character, the location of the dictionary file (please indicate full file path)
 #' @param repo_name character, the preferred CRAN repo used to update R packages, Default: 'https://cran.seoul.go.kr/'
-#' @return OUTPUT_DESCRIPTION
 #' @details Makes DESCRIPTION and NAMESPACE files.  Handles licensing and documentation.  Creates an roxygen2 header for each function using a custom parameter dictionary.
 #' @note Adding entries into the custom dictionary file (specified with the `dictionary_file` param) will automatically fill in parameters in the roxygen2 header.
 #' @references [R Bloggers](https://www.r-bloggers.com/2017/05/sinew-a-r-package-to-create-self-populating-roxygen2-skeletons)
@@ -152,25 +151,25 @@ make_package <- function(source_directory,
     add_header(i, '')
 
     if (has_abr)
-      add_header(i, '#\' importFrom data.table \':=\'')
+      add_header(i, '#\' @importFrom data.table \':=\'')
 
     if (has_apipe & has_tpipe)
-      add_header(i, '#\' importFrom magrittr \'%<>%\' \'%T>%\'')
+      add_header(i, '#\' @importFrom magrittr \'%<>%\' \'%T>%\'')
     else if (has_apipe & !has_tpipe)
-      add_header(i, '#\' importFrom magrittr \'%<>%\'')
+      add_header(i, '#\' @importFrom magrittr \'%<>%\'')
     else if (!has_apipe & has_tpipe)
-      add_header(i, '#\' importFrom magrittr \'%T>%\'')
+      add_header(i, '#\' @importFrom magrittr \'%T>%\'')
 
     add_header(i, '')
 
     if (has_dt & has_epipe) {
-      add_header(i, '#\' importFrom magrittr \'%$%\'')
+      add_header(i, '#\' @importFrom magrittr \'%$%\'')
       add_header(i, '')
       add_header(i, '  utils::globalVariables(c(\'.\'), utils::packageName())')
       add_header(i, 'if (getRversion() >= \'2.15.1\')')
       add_header(i, '.datatable.aware = TRUE')
     } else if (!has_dt & has_epipe) {
-      add_header(i, '#\' importFrom magrittr \'%$%\'')
+      add_header(i, '#\' @importFrom magrittr \'%$%\'')
       add_header(i, '')
       add_header(i, '  utils::globalVariables(c(\'.\'), utils::packageName())')
       add_header(i, 'if (getRversion() >= \'2.15.1\')')
