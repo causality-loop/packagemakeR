@@ -58,7 +58,9 @@ packagemakeR::make_package(
 - Rerun `devtools::check()`
 
 ### Push to GitHub
+- Run `devtools::document()` only if you get a `check() will no re-document this package` warning when running `devtools::check()`, then rerun `devtools::check()` after doing so
 ```sh
+R -e "devtools::document()"
 R -e "devtools::check()"
 R -e "devtools::install()"
 R -e "packagemakeR::push_package('~/some-dir', 'About my package.', 'john-doe')"
