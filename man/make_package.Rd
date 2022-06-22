@@ -32,9 +32,6 @@ make_package(
 
 \item{repo_name}{character, the preferred CRAN repo used to update R packages, Default: 'https://cran.seoul.go.kr/'}
 }
-\value{
-OUTPUT_DESCRIPTION
-}
 \description{
 Adds \emph{roxygen2} headers and creates many of the files needed for an R package.
 }

@@ -1,6 +1,3 @@
-if (getRversion() >= '2.15.1')
-  utils::globalVariables(c('.'), utils::packageName())
-
 #' @title make_package
 #' @description Adds *roxygen2* headers and creates many of the files needed for an R package.
 #' @param source_directory character, the full path of the source directory (the directory containing .R files in which work has been done to develop the package)
@@ -33,9 +30,8 @@ if (getRversion() >= '2.15.1')
 #' @export 
 #' @importFrom utils person install.packages
 #' @importFrom devtools update_packages install_github document
-#' @importFrom sinew sinew_opts makeOxyFile pretty_namespace make_import
+#' @importFrom sinew make_import
 #' @importFrom usethis create_package use_gpl3_license use_pipe
-#' @importFrom brio readLines
 make_package <- function(source_directory,
                          package_directory,
                          first_and_last_names,
@@ -93,13 +89,6 @@ make_package <- function(source_directory,
 
   devtools::update_packages(upgrade = 'always')
 
-  if (length(find.package('sinew')) == 0) 
-    devtools::install_github('yonicd/sinew')
-
-  # sinew options
-  sinew::sinew_opts$set(list(add_fields = c('details', 'author', 'references', 
-    'examples', 'export')))
-
   # make package
   usethis::create_package(package_directory, check_name = FALSE)
   setwd(package_directory)
@@ -115,70 +104,12 @@ make_package <- function(source_directory,
     recursive = TRUE
   )
 
-  # makes roxygen2 headers
-  # the manual says that you can use a path here, but it doesn't work :(
-  sinew::makeOxyFile(
-    list.files(file.path(package_directory, 'R'), full.names = TRUE, 
-      recursive = TRUE), 
-    overwrite = TRUE, verbose = FALSE, cut = 5, 
-    use_dictionary = dictionary_file)
-
-  # if you forget *::* it puts it in for you!
-  try(sinew::pretty_namespace(file.path(package_directory,'R'), 
-      overwrite = TRUE))
-
-  # completes 'Imports' section of DESCRIPTION
-  sinew::make_import(file.path(package_directory,'R'), 
-    cut = 5, print = FALSE, format='description', desc_loc = package_directory)
-
-  # magrittr/data.table imports
-  add_header <- function(filename, header) {
-    existing <- brio::readLines(filename)
-    sink(filename)
-    cat(header, '\n')
-    cat(existing, sep = '\n')
-    sink()
-  }
-
   for (i in list.files('R', full.names = TRUE)) {
+    make_pretty_headers(i)
 
-    has_apipe <- length(grep('%<>%', brio::readLines(i))) > 0
-    has_tpipe <- length(grep('%T>%', brio::readLines(i))) > 0
-    has_epipe <- length(grep('%\\$%', brio::readLines(i))) > 0
-    has_dt <- length(grep('data.table', brio::readLines(i))) > 0 
-    has_abr <- length(grep(':=', brio::readLines(i))) > 0 
-
-    add_header(i, '')
-
-    if (has_abr)
-      add_header(i, '#\' @importFrom data.table \':=\'')
-
-    if (has_apipe & has_tpipe)
-      add_header(i, '#\' @importFrom magrittr \'%<>%\' \'%T>%\'')
-    else if (has_apipe & !has_tpipe)
-      add_header(i, '#\' @importFrom magrittr \'%<>%\'')
-    else if (!has_apipe & has_tpipe)
-      add_header(i, '#\' @importFrom magrittr \'%T>%\'')
-
-    add_header(i, '')
-
-    if (has_dt & has_epipe) {
-      add_header(i, '#\' @importFrom magrittr \'%$%\'')
-      add_header(i, '')
-      add_header(i, '  utils::globalVariables(c(\'.\'), utils::packageName())')
-      add_header(i, 'if (getRversion() >= \'2.15.1\')')
-      add_header(i, '.datatable.aware = TRUE')
-    } else if (!has_dt & has_epipe) {
-      add_header(i, '#\' @importFrom magrittr \'%$%\'')
-      add_header(i, '')
-      add_header(i, '  utils::globalVariables(c(\'.\'), utils::packageName())')
-      add_header(i, 'if (getRversion() >= \'2.15.1\')')
-    } else if (has_dt & !has_epipe) {
-      add_header(i, '  utils::globalVariables(c(\'.\'), utils::packageName())')
-      add_header(i, 'if (getRversion() >= \'2.15.1\')')
-      add_header(i, '.datatable.aware = TRUE')
-    }
-
+    # completes 'Imports' section of DESCRIPTION
+    sinew::make_import(i, cut = 5, print = FALSE, 
+      format = 'description', desc_loc = package_directory)
   }
 
   usethis::use_pipe()
