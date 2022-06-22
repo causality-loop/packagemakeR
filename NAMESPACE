@@ -2,6 +2,7 @@
 
 export("%>%")
 export(make_package)
+export(make_pretty_headers)
 export(push_package)
 importFrom(brio,readLines)
 importFrom(devtools,document)
