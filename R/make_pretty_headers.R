@@ -18,7 +18,8 @@
 #' @importFrom devtools install_github
 #' @importFrom sinew sinew_opts makeOxyFile pretty_namespace
 #' @importFrom brio readLines
-make_pretty_headers <- function(file_name, dictionary_file)
+make_pretty_headers <- function(
+  file_name, dictionary_file = '~/git/packagemakeR/inst/extdata/dictionary.R')
 {
 
   if (length(find.package('sinew')) == 0) 
