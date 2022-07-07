@@ -22,6 +22,9 @@ make_pretty_headers <- function(
   file_name, dictionary_file = '~/git/packagemakeR/inst/extdata/dictionary.R')
 {
 
+  if (!file.exists(file_name)) stop('file does not exist')
+  if (!file.exists(dictionary_file)) stop('dictionary file does not exist')
+
   if (length(find.package('sinew')) == 0) 
     devtools::install_github('yonicd/sinew')
 
