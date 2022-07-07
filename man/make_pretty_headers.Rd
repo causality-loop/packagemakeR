@@ -4,7 +4,10 @@
 \alias{make_pretty_headers}
 \title{make_pretty_headers}
 \usage{
-make_pretty_headers(file_name, dictionary_file)
+make_pretty_headers(
+  file_name,
+  dictionary_file = "~/git/packagemakeR/inst/extdata/dictionary.R"
+)
 }
 \arguments{
 \item{file_name}{character, the file name relative to the work directory or, if none, the full path to the file}
@@ -12,16 +15,17 @@ make_pretty_headers(file_name, dictionary_file)
 \item{dictionary_file}{character, the location of the dictionary file (please indicate full file path)}
 }
 \description{
-Adds \emph{roxygen2} headers to new functions added
+Adds \emph{roxygen2} headers to new functions added.
 }
 \details{
-Creates an roxygen2 header for each function using a custom parameter dictionary
+Creates an roxygen2 header for each function using a custom parameter dictionary.
 }
 \examples{
 \dontrun{
 if(interactive()){
  packagemakeR::make_pretty_headers(
-   file_name = '~/git/demo/my_new_fun.R')
+   file_name = '~/git/demo/my_new_fun.R',
+   dictionary_file = '~/git/packagemakeR/inst/extdata/dictionary.R')
  }
 }
 }
